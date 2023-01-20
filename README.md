@@ -12,7 +12,7 @@ This [notebook](https://github.com/LukaLmelias/DeepCCA_thesis/blob/main/DeepCCA_
 
 <h3> 3. Prediction and Evaluation </h3>
 
-[Here](https://github.com/LukaLmelias/DeepCCA_thesis/blob/main/spectra_structure_prediction.ipynb) we perfom a cross modal retrieval. It takes in the spectra embeddings and output the most likely structure of that spectra. Next we evaluate using Tanimoto scores whether the predicted structure is similar to the true structure.
+[Here](https://github.com/LukaLmelias/DeepCCA_thesis/blob/main/spectra_structure_prediction.ipynb) we perfom a cross modal retrieval. It takes in the spectra embeddings and outputs the most likely structure of that spectra. Next we evaluate using Tanimoto scores whether the predicted structure is similar to the true structure.
 
 
 
