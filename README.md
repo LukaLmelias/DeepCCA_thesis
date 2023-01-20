@@ -2,7 +2,7 @@
 
 ![image](https://user-images.githubusercontent.com/71344715/213717024-8e8cd437-8600-47fd-bacb-d653eebf0793.png)
 
-This project aims at predicting chemical structure of metabolites from LC-MS/MS spectra using Deep Canonical Correlation Analysis(DeepCCA). This a deep learning extension of [CCA](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2572-9). This work is done in three phases as outlined below.
+This project aims at predicting chemical structure of metabolites from LC-MS/MS spectra using Deep Canonical Correlation Analysis(DeepCCA). DeepCCA is a deep learning extension of [CCA](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2572-9). This work is done in three phases as outlined below.
 
 
 
