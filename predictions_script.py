@@ -23,10 +23,10 @@ import pickle
 import os
 
 
-from spec2vec import Spec2Vec
-from matchms import calculate_scores
+# from spec2vec import Spec2Vec
+# from matchms import calculate_scores
 
-from openeye import oechem
+# from openeye import oechem
 
 os.chdir('../raw_data')
 
