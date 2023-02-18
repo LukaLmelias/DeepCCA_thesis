@@ -344,7 +344,7 @@ print(train_df.shape)
 # for comparison, also compute random predictions.
 
 predictions_random = predict(subject_df=train_df,\
-                        query_df=test_df,dims=100,
+                        query_df=test_df.head(5),dims=100,
                         subject_embed='sdl_z2', # base name of z scores cols in subject df
                        query_embed='sdl_z1', # base name of z scores cols in query df
                        metric='cos',
