@@ -57,7 +57,9 @@ def predict(subject_df,query_df,dims,
             subject_embed='sdl_z2',
             metric='euc',
            query_embed='sdl_z1',
-           top_k=20): #both dfs should have z1 and z2 coloumns
+           top_k=20
+           random_preds=False
+           ): #both dfs should have z1 and z2 coloumns
 
     # initiate an empty df 
     preds = pd.DataFrame()
