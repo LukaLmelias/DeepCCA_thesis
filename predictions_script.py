@@ -105,10 +105,16 @@ def predict(subject_df,query_df,dims,
             top_k_tanis = []
             for corr in top_k_corr:
                 
-                subject_index = similarity.index(corr) # pick subject index
-                inchi = subject_df['inchikey14'].iloc[subject_index]
-                #print(inchi)
-                top_k_ichi.append(inchi)
+                if random_preds:
+                    sunject_index = random.randint(0, subject_df.shape[0])  
+                    inchi = subject_df['inchikey14'].iloc[subject_index]
+                    #print(inchi)
+                    top_k_ichi.append(inchi)
+                else:
+                    subject_index = similarity.index(corr) # pick subject index
+                    inchi = subject_df['inchikey14'].iloc[subject_index]
+                    #print(inchi)
+                    top_k_ichi.append(inchi)
                 
                 
                 #compute tanis
@@ -147,10 +153,17 @@ def predict(subject_df,query_df,dims,
             top_k_tanis = []
             for dist in top_k_dist:
                 
-                subject_index = similarity.index(dist)
-                #print(subject_index)
-                inchi = subject_df['inchikey14'].iloc[subject_index]
-                top_k_ichi.append(inchi)
+                if random_preds:
+                    
+                    subject_index =  random.randint(0, subject_df.shape[0]) #randomly pick a structure index
+                    inchi = subject_df['inchikey14'].iloc[subject_index]
+                    top_k_ichi.append(inchi)
+                    
+                else:
+                    subject_index = similarity.index(dist)
+                    #print(subject_index)
+                    inchi = subject_df['inchikey14'].iloc[subject_index]
+                    top_k_ichi.append(inchi)
                 
                 #compute tanis
                 smile1 = subject_df['smiles'].iloc[subject_index] #extract the subject smile
@@ -220,31 +233,31 @@ print(train_df.shape)
 
 
 
-#%%time
-metrics = ['cos', 'corr']
+# #%%time
+# metrics = ['cos', 'corr']
 
-models = ['sdl', 'cca']
-#size = 5
-for metric in metrics:
-    for model in models:
-        print(f'\nModel {model}')
-        # cosine distance
-        predictions_df = predict(subject_df=train_df,\
-                        query_df=train_df,dims=100,
-                        subject_embed=f'{model}_z2', # base name of z scores cols in subject df
-                       query_embed=f'{model}_z1', # base name of z scores cols in query df
-                       metric=metric,
-                                top_k=20)
+# models = ['sdl', 'cca']
+# #size = 5
+# for metric in metrics:
+#     for model in models:
+#         print(f'\nModel {model}')
+#         # cosine distance
+#         predictions_df = predict(subject_df=train_df,\
+#                         query_df=train_df,dims=100,
+#                         subject_embed=f'{model}_z2', # base name of z scores cols in subject df
+#                        query_embed=f'{model}_z1', # base name of z scores cols in query df
+#                        metric=metric,
+#                                 top_k=20)
     
-#         print('\nComputing Distance is Completed successfully\n')
-#        # tanimotos and hits
-#         scores, hit = get_tanimotos(dist,subject_df=train_df,\
-#                                     query_df=test_df.head(size),\
-#                                     metric=metric)
+# #         print('\nComputing Distance is Completed successfully\n')
+# #        # tanimotos and hits
+# #         scores, hit = get_tanimotos(dist,subject_df=train_df,\
+# #                                     query_df=test_df.head(size),\
+# #                                     metric=metric)
     
-        print('\nComputing Tanimoto and hits is Completed successfully\n')
-        # write the distances to file
-        Files(f'./sdl_logs/sdl_optimized_params/train_in_train/{model}_preds/{model}_final_model_train_in_train_{metric}_predictions_df.pickle').write_to_file(predictions_df)
+#         print('\nComputing Tanimoto and hits is Completed successfully\n')
+#         # write the distances to file
+#         Files(f'./sdl_logs/sdl_optimized_params/train_in_train/{model}_preds/{model}_final_model_train_in_train_{metric}_predictions_df.pickle').write_to_file(predictions_df)
     
 #         del dist # rescue memory :) 
     
@@ -252,3 +265,19 @@ for metric in metrics:
 #         Files(f'./sdl_logs/sdl_optimized_params/{model}_preds/{model}_final_model_test_{metric}_hits.pickle').write_to_file(hit)
     
 #         del scores, hit # only load when actually using them.
+
+
+# for comparison, also compute random predictions.
+
+predictions_random = predict(subject_df=train_df,\
+                        query_df=test_df,dims=100,
+                        subject_embed='sdl_z2', # base name of z scores cols in subject df
+                       query_embed='sdl_z1', # base name of z scores cols in query df
+                       metric='cos',
+                      top_k=20,random_preds=True)
+
+Files(f'./sdl_logs/sdl_optimized_params/test_in_train/sdl_preds/random_final_model_train_in_train_cos_predictions_df.pickle').write_to_file(predictions_random)
+    
+
+
+
