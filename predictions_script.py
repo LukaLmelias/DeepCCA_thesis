@@ -108,7 +108,7 @@ def predict(subject_df,query_df,dims,
             for corr in top_k_corr:
                 
                 if random_preds:
-                    sunject_index = random.randint(0, subject_df.shape[0])  
+                    sunject_index = random.randint(0, subject_df.shape[0]-1)  #minus 1 to be within the df
                     inchi = subject_df['inchikey14'].iloc[subject_index]
                     #print(inchi)
                     top_k_ichi.append(inchi)
@@ -157,7 +157,7 @@ def predict(subject_df,query_df,dims,
                 
                 if random_preds:
                     
-                    subject_index =  random.randint(0, subject_df.shape[0]) #randomly pick a structure index
+                    subject_index =  random.randint(0, subject_df.shape[0]-1) #randomly pick a structure index
                     inchi = subject_df['inchikey14'].iloc[subject_index]
                     top_k_ichi.append(inchi)
                     
@@ -303,7 +303,7 @@ test_df.head(3)
 
 # select unique inchikey14 and create a database from training set
 train_df.drop_duplicates('inchikey14', inplace=True)
-print(train_df.shape)
+print(train_df.shape, test_df.shape[0])
 
 
 
