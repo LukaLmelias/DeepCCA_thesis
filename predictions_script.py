@@ -194,8 +194,10 @@ def predict(subject_df,query_df,dims,
                 
 #             else:
 #                 pass
-                
-            
+    
+    #add query class (not efficient but no time to think for now :)           
+    preds = add_query_class(preds, query_df)   
+    preds = add_subject_class(subject_df,preds)
             
     
     return preds
@@ -214,6 +216,76 @@ def tanimoto(smi1, smi2):
     #similarity
     score = round(DataStructs.FingerprintSimilarity(fp1,fp2),4)
     return score
+
+
+#### add query classes
+
+def add_query_class(preds_df, query_df):
+    count = 0
+    query_smiles = []
+    query_inchis = []
+    query_classes = []
+    for row in preds_df.itertuples():
+        #print(row.Index)
+    
+        # initiate new cols
+        #cca_cos_preds_df['query_smile'] = None
+        #cca_cos_preds_df['query_class'] = None
+    
+        # extract true class and smile
+        query_inchi = query_df.loc[query_df['spec_id'] == row.Index, 'inchikey14'].iloc[0]
+        query_smile = query_df.loc[query_df['spec_id'] == row.Index, 'smiles'].iloc[0]
+        query_class = query_df.loc[query_df['spec_id'] == row.Index, 'cf_class'].iloc[0]
+    
+        query_inchis.append(query_inchi)
+        query_smiles.append(query_smile)
+        query_classes.append(query_class)
+        # add true class and smile to the new cols
+        #cca_cos_preds_df.loc[row.Index,'query_smile'] = query_smile
+        #cca_cos_preds_df.loc[row.Index,'query_class'] = query_class
+    
+        #cca_cos_preds_df.loc[ cca_cos_preds_df.index == row.Index, 'query_smile'] = query_smile
+    
+        #print(cca_cos_preds_df.loc[row.Index,'query_smile'])
+        #count +=1
+        #print(query_smile)
+        #     if count > 5:
+        #         break
+        
+    preds_df['query_inchi14'] = [x for x in query_inchis]
+    preds_df['query_smile'] = [x for x in query_smiles ]
+    preds_df['query_class'] = [x for x in query_classes ]
+    
+    return preds_df
+
+
+
+# add subject top 20 classes, smiles
+
+def add_subject_class(subject_df,preds_df):
+    top_20_classes = []
+    top_20_smiles = []
+    for row in preds_df.itertuples():
+    #print(row.top_20_inchi14)
+    
+    
+    
+        top_20_class = []
+        top_20_smile = []
+        for inchi in row.top_20_inchi14:
+            # extract true class and smile
+        
+            hit_smile = subject_df.loc[subject_df['inchikey14'] == inchi, 'smiles'].iloc[0]
+            hit_class = subject_df.loc[subject_df['inchikey14'] == inchi, 'cf_class'].iloc[0]
+    
+            top_20_class.append(hit_class)
+            top_20_smile.append(hit_smile)
+        top_20_classes.append(top_20_class)
+        top_20_smiles.append(top_20_smile)
+    #break
+    preds_df['top_20_classes']= [x for x in top_20_classes]
+    preds_df['top_20_smiles'] = [x for x in top_20_smiles]
+    return preds_df
 
 
 ##### Compute predictions from the final model ¶
@@ -272,11 +344,15 @@ print(train_df.shape)
 # for comparison, also compute random predictions.
 
 predictions_random = predict(subject_df=train_df,\
-                        query_df=test_df.head(5),dims=100,
+                        query_df=test_df,dims=100,
                         subject_embed='sdl_z2', # base name of z scores cols in subject df
                        query_embed='sdl_z1', # base name of z scores cols in query df
                        metric='cos',
                       top_k=20,random_preds=True)
+
+
+
+
 
 Files(f'./sdl_logs/sdl_optimized_params/test_in_train/sdl_preds/random_final_model_train_in_train_cos_predictions_df.pickle').write_to_file(predictions_random)
     
