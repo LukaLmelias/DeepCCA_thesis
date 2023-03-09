@@ -24,7 +24,7 @@ This [notebook](https://github.com/LukaLmelias/DeepCCA_thesis/blob/main/DeepCCA_
 
 
 
-<h2> Training final model </h2>
+<h2> Training the final model </h2>
  
  After selecting best performing hyperparameters, we train the final model in this [notebook](https://github.com/LukaLmelias/DeepCCA_thesis/blob/main/deepcca_optimized_model.ipynb)
  
